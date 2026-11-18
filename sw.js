@@ -1,6 +1,6 @@
 /* BrainGuard Companion — offline shell.
    Cache-first for the app itself, nothing else. No analytics, no remote calls. */
-const CACHE = "brainguard-v3.1";
+const CACHE = "brainguard-v3.2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -34,7 +34,7 @@ self.addEventListener("fetch", (e) => {
   if (url.origin !== location.origin) return; // device models/CDN are not cached here
   // Network-first so a redeploy is picked up immediately; cache keeps it usable offline.
   e.respondWith(
-    fetch(e.request).then((res) => {
+    fetch(e.request, { cache: "no-store" }).then((res) => {
       const copy = res.clone();
       caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
       return res;
