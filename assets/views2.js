@@ -12,6 +12,7 @@
   function icon(id, cls) { return H().icon(id, cls); }
 
   var active = null;
+  var watchdog = null;
 
   /* ---------------- baseline check ---------------- */
 
@@ -90,6 +91,13 @@
       var host = document.getElementById("stageHost");
       host.classList.remove("hide");
       host.scrollIntoView({ behavior: "smooth", block: "start" });
+      clearTimeout(watchdog);
+      watchdog = setTimeout(function () {
+        // Last line of defence: no test may leave the stage frozen.
+        try { if (active) active.cancel(); } catch (e) {}
+        var h = document.getElementById("stageHost");
+        if (h) finishBlocked(h, "sens_blocked");
+      }, 34000);
       if (kind === "tap") startTap(host);
       else if (kind === "speech") startSpeech(host);
       else if (kind === "balance") startBalance(host);
@@ -269,11 +277,12 @@
   }
 
   function finish(kind, host, res) {
+    clearTimeout(watchdog);
     active = null;
     if (!res || res.cancelled) { host.classList.add("hide"); host.innerHTML = ""; return; }
     if (res.error) {
       var key = /too_few/.test(res.error) ? "q_low"
-        : /no_motion/.test(res.error) ? "sens_blocked"
+        : /no_motion|unavailable/.test(res.error) ? "sens_unavailable"
           : /no_media|notfound/i.test(res.error) ? "sens_no_cam"
             : "sens_blocked";
       finishBlocked(host, key);

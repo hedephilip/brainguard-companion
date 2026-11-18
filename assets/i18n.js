@@ -112,6 +112,7 @@
     sens_blocked: "Your browser blocked this sensor. Allow it in the address bar and try again.",
     sens_no_cam: "No camera found. You can skip this test.",
     sens_reduced: "Reduced precision — face model unavailable, using motion only.",
+    sens_unavailable: "This device did not provide sensor data, so the test stopped. The daily log and the other tests still work.",
 
     tr_t: "Trends", tr_b: "Every line is your own data. Gaps mean no entry, not a zero.",
     tr_28: "28 days", tr_90: "90 days", tr_factors: "Lifestyle factors", tr_sensors: "Motor & speech",
@@ -318,6 +319,7 @@
     sens_blocked: "Pelayar menyekat sensor ini. Benarkan di bar alamat dan cuba lagi.",
     sens_no_cam: "Tiada kamera. Anda boleh langkau ujian ini.",
     sens_reduced: "Ketepatan dikurangkan — model wajah tiada, guna gerakan sahaja.",
+    sens_unavailable: "Peranti ini tidak memberikan data sensor, jadi ujian dihentikan. Log harian dan ujian lain masih berfungsi.",
 
     tr_t: "Trend", tr_b: "Setiap garis ialah data anda sendiri. Jurang bermakna tiada rekod, bukan sifar.",
     tr_28: "28 hari", tr_90: "90 hari", tr_factors: "Faktor gaya hidup", tr_sensors: "Motor & pertuturan",
@@ -524,6 +526,7 @@
     sens_blocked: "浏览器阻止了该传感器。请在地址栏允许后重试。",
     sens_no_cam: "没有找到摄像头，可以跳过这项测试。",
     sens_reduced: "精度降低——面部模型不可用，仅使用运动信息。",
+    sens_unavailable: "这台设备没有提供传感器数据，测试已停止。每日记录和其他测试仍可正常使用。",
 
     tr_t: "趋势", tr_b: "每条线都是你自己的数据。断点表示没有记录，不是 0。",
     tr_28: "28 天", tr_90: "90 天", tr_factors: "生活方式因素", tr_sensors: "运动与言语",
@@ -730,6 +733,7 @@
     sens_blocked: "El navegador ha bloqueado este sensor. Permítelo en la barra de direcciones.",
     sens_no_cam: "No se encontró cámara. Puedes saltar esta prueba.",
     sens_reduced: "Precisión reducida: sin modelo facial, solo movimiento.",
+    sens_unavailable: "Este dispositivo no proporcionó datos del sensor, así que la prueba se detuvo. El registro diario y las demás pruebas siguen funcionando.",
 
     tr_t: "Tendencias", tr_b: "Cada línea son tus datos. Un hueco significa que no hay registro, no un cero.",
     tr_28: "28 días", tr_90: "90 días", tr_factors: "Factores de estilo de vida", tr_sensors: "Movimiento y habla",

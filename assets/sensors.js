@@ -116,9 +116,22 @@
     var frames = [], f0s = [], start = 0;
     var buf, innerSettle = null;
 
-    var ready = navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+    // A machine with no input device can leave getUserMedia pending forever, which
+    // would freeze the test with no message. Race it against a hard timeout.
+    var micTimedOut = false;
+    var pendingMic = (navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
       ? navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false } })
       : Promise.reject(new Error("no_media"));
+    var ready = Promise.race([
+      pendingMic,
+      new Promise(function (_, rej) {
+        setTimeout(function () { micTimedOut = true; rej(new Error("mic_unavailable")); }, 8000);
+      })
+    ]);
+    pendingMic.then(function (late) {
+      if (!micTimedOut) return;
+      try { late.getTracks().forEach(function (t) { t.stop(); }); } catch (e) {}
+    }, function () {});
 
     var promise = ready.then(function (s) {
       stream = s;
@@ -230,7 +243,7 @@
     var dur = o.duration || 20000;
     var samples = [], cancelled = false, finished = false;
     var start = performance.now(), timer, iv;
-    var lp = 1;
+    var lp = 1, noDataTimer = null, noDataError = false;
 
     function onMotion(e) {
       var a = e.accelerationIncludingGravity || e.acceleration;
@@ -247,15 +260,22 @@
 
     root.addEventListener("devicemotion", onMotion);
 
+    // Desktop browsers expose DeviceMotionEvent but never fire it. Without this
+    // guard the test would sit at 20 s and then report a meaningless zero.
+    noDataTimer = setTimeout(function () {
+      if (!finished && samples.length < 5) { noDataError = true; finish(); }
+    }, 4000);
+
     var settle = null;
 
     function finish() {
       if (finished) return;
       finished = true;
-      clearTimeout(timer); clearInterval(iv);
+      clearTimeout(timer); clearTimeout(noDataTimer); clearInterval(iv);
       root.removeEventListener("devicemotion", onMotion);
       if (!settle) return;
       if (cancelled) { settle({ cancelled: true }); return; }
+      if (noDataError) { settle({ error: "no_motion_data" }); return; }
 
       var lin = samples.map(function (s) { return s.lin; });
       var rms = sd(lin) * 1000;
@@ -402,8 +422,20 @@
     var g2d = canvas ? canvas.getContext("2d", { willReadFrequently: true }) : null;
     var prevFrame = null;
 
-    var promise = navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+    var camTimedOut = false;
+    var pendingCam = (navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
       ? navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } } })
+      : Promise.reject(new Error("no_media"));
+    pendingCam.then(function (late) {
+      if (!camTimedOut) return;
+      try { late.getTracks().forEach(function (t) { t.stop(); }); } catch (e) {}
+    }, function () {});
+    var promise = Promise.race([
+      pendingCam,
+      new Promise(function (_, rej) {
+        setTimeout(function () { camTimedOut = true; rej(new Error("camera_unavailable")); }, 8000);
+      })
+    ])
         .then(function (s) {
           stream = s;
           video.srcObject = s;
@@ -428,8 +460,7 @@
         })
         .catch(function (err) {
           return { error: err && err.name === "NotAllowedError" ? "camera_blocked" : "camera_failed" };
-        })
-      : Promise.reject(new Error("no_media"));
+        });
 
     function loop() {
       if (finished) return;
