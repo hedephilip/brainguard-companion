@@ -413,7 +413,7 @@
     ["AR", "Argentina", "911"], ["CL", "Chile", "131"], ["CO", "Colombia", "123"], ["PE", "Peru", "117"],
     ["EG", "Egypt", "123"], ["NG", "Nigeria", "112"], ["KE", "Kenya", "999"], ["PK", "Pakistan", "1122"],
     ["BD", "Bangladesh", "999"], ["LK", "Sri Lanka", "1990"], ["NP", "Nepal", "102"], ["TW", "Taiwan", "119"],
-    ["MO", "Macau", "999"]
+    ["MO", "Macau", "999"], ["MT", "Malta", "112"]
   ];
 
   function countryRow(code) {
