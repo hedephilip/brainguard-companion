@@ -39,7 +39,7 @@ Then open http://127.0.0.1:8765/. Camera, microphone and motion require HTTPS or
 node test/logic-test.js
 ```
 
-34 model checks plus 10 emergency-engine checks. The test file is excluded from this deployment branch; it lives with the source package.
+49 checks in total: 34 model, 10 emergency-engine and 5 tapping-pipeline. Tests ship with the source package (`node test/logic-test.js`, `node test/tap-test.js`).
 
 ## Language
 
