@@ -1,0 +1,14 @@
+{
+  "name": "BrainGuard Companion",
+  "short_name": "BrainGuard",
+  "description": "Offline-first brain health companion: daily risk-factor logging, periodic motor and speech check-ins, explainable trends.",
+  "start_url": "./index.html#/today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080b1f",
+  "theme_color": "#080b1f",
+  "icons": [
+    { "src": "assets/mark.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
