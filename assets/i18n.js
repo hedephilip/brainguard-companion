@@ -136,6 +136,7 @@
     pv_delete_b: "This removes your logs, baseline sessions and plan from this browser. It cannot be undone.",
     pv_retention: "Kept until you delete it. No expiry, no upload.",
     pv_arch: "Architecture",
+    arch_store: "Log \u00b7 sensors \u00b7 plan", arch_device: "stored on this device", arch_score: "on-device scoring", arch_nosrv: "no server", arch_noacct: "no account",
 
     em_t: "Emergency check", em_b: "This is not a triage tool. If any of these are happening now, call an ambulance and do not drive yourself.",
     em_call: "Call emergency services", em_signs: "Signs that mean call now",
@@ -343,6 +344,7 @@
     pv_delete_b: "Ini memadam log, sesi asas dan pelan daripada pelayar ini. Tidak boleh dibatalkan.",
     pv_retention: "Disimpan sehingga anda padam. Tiada luput, tiada muat naik.",
     pv_arch: "Seni bina",
+    arch_store: "Log \u00b7 sensor \u00b7 pelan", arch_device: "disimpan pada peranti ini", arch_score: "penilaian pada peranti", arch_nosrv: "tiada pelayan", arch_noacct: "tiada akaun",
 
     em_t: "Semakan kecemasan", em_b: "Ini bukan alat triaj. Jika mana-mana ini berlaku sekarang, hubungi ambulans dan jangan memandu sendiri.",
     em_call: "Hubungi kecemasan", em_signs: "Tanda yang bermakna hubungi sekarang",
@@ -550,6 +552,7 @@
     pv_delete_b: "这会从这个浏览器移除记录、基线检查和计划，无法撤销。",
     pv_retention: "保存到你删除为止。不会过期，也不会被上传。",
     pv_arch: "架构",
+    arch_store: "记录 · 传感器 · 计划", arch_device: "保存在本机", arch_score: "在本机完成计算", arch_nosrv: "没有服务器", arch_noacct: "没有账号",
 
     em_t: "急救自查", em_b: "这不是分诊工具。如果以下任何情况正在发生，请立即叫救护车，不要自己开车。",
     em_call: "拨打急救电话", em_signs: "需要立刻求助的信号",
@@ -757,6 +760,7 @@
     pv_delete_b: "Se borran registros, sesiones y plan de este navegador. No se puede deshacer.",
     pv_retention: "Se guarda hasta que lo borres. Sin caducidad, sin subidas.",
     pv_arch: "Arquitectura",
+    arch_store: "Registro \u00b7 sensores \u00b7 plan", arch_device: "guardado en este dispositivo", arch_score: "cálculo en el dispositivo", arch_nosrv: "sin servidor", arch_noacct: "sin cuenta",
 
     em_t: "Chequeo de urgencia", em_b: "Esto no es un triaje. Si algo de esto ocurre ahora, llama a urgencias y no conduzcas.",
     em_call: "Llamar a urgencias", em_signs: "Signos que significan llamar ahora",

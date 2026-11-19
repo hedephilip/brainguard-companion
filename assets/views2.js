@@ -454,14 +454,14 @@
     html += '<section class="card"><h3>' + esc(t("pv_arch")) + "</h3>" +
       '<svg viewBox="0 0 560 150" style="width:100%">' +
       '<rect x="10" y="34" width="200" height="82" rx="12" fill="rgba(91,214,200,.1)" stroke="rgba(91,214,200,.4)"/>' +
-      '<text x="110" y="66" text-anchor="middle" fill="#dff7f4" font-size="12">Log · sensors · plan</text>' +
-      '<text x="110" y="88" text-anchor="middle" fill="#8f9ac4" font-size="10">localStorage on this device</text>' +
+      '<text x="110" y="66" text-anchor="middle" fill="#dff7f4" font-size="11">' + esc(t("arch_store")) + '</text>' +
+      '<text x="110" y="88" text-anchor="middle" fill="#8f9ac4" font-size="9">' + esc(t("arch_device")) + '</text>' +
       '<rect x="250" y="34" width="120" height="82" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>' +
-      '<text x="310" y="70" text-anchor="middle" fill="#c3cbe8" font-size="11">on-device</text>' +
-      '<text x="310" y="88" text-anchor="middle" fill="#8f9ac4" font-size="10">scoring</text>' +
+      '<text x="310" y="73" text-anchor="middle" fill="#c3cbe8" font-size="10">' + esc(t("arch_score")) + '</text>' +
+      '' +
       '<rect x="410" y="34" width="140" height="82" rx="12" fill="rgba(232,86,79,.08)" stroke="rgba(232,86,79,.3)" stroke-dasharray="5 4"/>' +
-      '<text x="480" y="70" text-anchor="middle" fill="#ffc9c5" font-size="11">no server</text>' +
-      '<text x="480" y="88" text-anchor="middle" fill="#8f9ac4" font-size="10">no account</text>' +
+      '<text x="480" y="66" text-anchor="middle" fill="#ffc9c5" font-size="10">' + esc(t("arch_nosrv")) + '</text>' +
+      '<text x="480" y="88" text-anchor="middle" fill="#8f9ac4" font-size="10">' + esc(t("arch_noacct")) + '</text>' +
       '<path d="M210 75h40M370 75h40" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4"/>' +
       "</svg>" +
       '<p class="hint">' + esc(t("pv_retention")) + "</p></section>";
