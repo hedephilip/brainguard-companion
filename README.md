@@ -1,50 +1,81 @@
-# BrainGuard Companion
+# BrainGuard Companion v3
 
-**Live:** https://hedephilip.github.io/brainguard-companion/
+**Live:** https://hedephilip.github.io/brainguard-companion/ · **Repo:** https://github.com/hedephilip/brainguard-companion
 
-An offline-first brain-health companion with a BEFAST emergency route in the same app. Static site: no backend, no account, no analytics.
+An offline-first **continuous brain-health companion**. This build is the direct response to the Future Health Digital Innovation Challenge review of the BrainGuard prototype, which asked for protection *before* the emergency rather than another acute questionnaire.
 
-## What is here
+Open `index.html` (or serve the folder) — no build step, no dependencies at runtime, no network calls.
 
-| Route | Purpose |
+---
+
+## What the review asked for, and where it is answered
+
+| Review point | Where it lives in this build |
 |---|---|
-| `#/today` | Brain-health index, ranked insights with drivers, domain radar, weekly plan preview |
-| `#/log` | 60-second daily check-in across 12 modifiable factors |
-| `#/check` | Five on-device tests: finger tapping, voice, standing sway, choice reaction time, optional face and eye landmarks |
-| `#/trends` | 28/90-day factor series, per-metric baselines and z-scores |
-| `#/plan` | Weekly 3–5 action plan drawn from the weakest factors |
-| `#/report` | Printable one-page clinician summary |
-| `#/privacy` | Consent per sensor, storage size, export / import / delete |
-| `#/emergency` | BEFAST triage: any single sign is RED, resolved symptoms are AMBER, local emergency number |
+| "Expand beyond emergency detection into a continuous cognitive wellness companion" | `#/today` + `#/log`: 12 modifiable factors, daily 60-second entry, streak, index and trends. Emergency is now one route among eight, not the product. |
+| "Tracks everyday modifiable lifestyle habits such as sleep quality, stress, physical activity, and cardiovascular risk factors" | `assets/model.js` factor scorers: sleep, stress, mood, movement, blood pressure, smoking, alcohol, diet, connection, hearing, vision, new learning. |
+| "Camera-based analysis … subtle motor or behavioral shifts" | `#/check`: five on-device tests — face/eye landmarks, voice, finger tapping, postural sway, choice reaction time. |
+| "Periodic baseline check-ins" | Every test is compared with the user's **own** rolling baseline (median/MAD), never with a population norm. Three sessions before any trend is shown. |
+| "Synthesize longitudinal lifestyle patterns … into clear, explainable risk insights" | `assets/model.js → insights()` produces severity-ranked cards, each with its drivers, the number of days behind it, a confidence level and an "why this appears" disclosure. |
+| "Personalized brain-health routines" | `#/plan`: 3–5 actions drawn from the user's weakest factors, rotating weekly, each with its evidence tag. |
+| "Avoids definitive clinical diagnoses" | No disease probability is computed anywhere. Scores are 0–100 summaries of documented risk factors; every surface repeats that this is not a diagnosis. |
+| "Safeguards sensitive neurological and camera data with strict privacy controls" | `#/privacy`: per-sensor consent, no account, no server, no analytics, camera frames and audio are processed in memory and never stored, JSON export/import, one-click deletion. |
+| "Maintains clear referral pathways" | `assets/model.js → referral()`: urgent → emergency route; act → "book within two weeks" plus the printable clinician report; watch → keep logging; routine → maintain. |
 
-## Design commitments
+---
 
-- **Any single current BEFAST sign is RED.** No weighting, no blood-pressure gate, no auto-dial.
-- **Compare the user with themselves.** Baselines use median/MAD per metric, with a spread floor; a change needs two consecutive sessions.
-- **Refuse bad data.** Every test gates on quality and declines to store a failed measurement.
-- **Nothing leaves the device.** Camera frames, audio and motion are processed in memory and discarded; only derived numbers are stored.
-- **No diagnosis.** Scores summarise documented risk factors. They are not probabilities of disease.
+## Views
 
-## Run locally
+- **Today** — greeting, brain-health index ring, streak/coverage, ranked insights, domain radar, plan preview, pattern sparklines, baseline due card.
+- **Daily log** — 12 factors, all optional; missing answers stay missing instead of being scored as zero.
+- **Baseline check** — tap, voice, balance, reaction time, and an optional face/eye test. Every test reports quality separately and refuses to save a bad measurement.
+- **Trends** — 28/90-day factor lines, domain radar, sensor table with per-metric z against the personal baseline.
+- **This week** — adaptive multidomain plan with completion state.
+- **Clinician report** — printable one-pager: index, domains, 28-day factor table, sensor history, current flagged items, privacy statement.
+- **Privacy** — consent ledger, architecture diagram, storage size, export/import/delete.
+- **Emergency** — country-aware emergency number, BE-FAST, "note the time of first symptom", and the clinical prototype link.
+
+## Measurement details
+
+| Test | Signals | Quality gate |
+|---|---|---|
+| Finger tapping (20 s) | taps/s, inter-tap CV, fatigue drift | ≥15 taps and CV ≤ 0.85 |
+| Voice (10 s, count 1–10) | syllable rate, pause ratio, F0 SD in semitones (autocorrelation) | p90 level > 0.02, voiced > 25 %, ≥5 peaks |
+| Balance (20 s standing) | linear-acceleration RMS, path, jerk | >150 samples, RMS < 400 mg |
+| Reaction time (12 trials) | median RT, RT CV, errors | ≥5 valid trials, ≤3 errors |
+| Face & eyes (8 s) | mouth/brow asymmetry normalised to inter-ocular distance, head jitter, blink rate | ≥20 landmark frames; degrades to motion-only with a visible "reduced precision" notice |
+
+The face test uses MediaPipe Face Landmarker loaded from CDN on first use; if it is unavailable or blocked, the test still runs in reduced mode and says so. Everything else is plain browser APIs (`getUserMedia`, `DeviceMotionEvent`, `AudioContext`).
+
+## Privacy model
+
+- One `localStorage` document (`bg.companion.v3`). No cookies, no identifiers, no outbound requests.
+- Camera frames are drawn to a hidden canvas for analysis and discarded; audio is analysed from an `AnalyserNode` and discarded; motion samples are discarded after the session.
+- Only derived scalars are stored (`tapRate`, `swayRms`, …).
+- Export is a plain JSON file the user owns; deletion is immediate and total.
+
+## Run and deploy
 
 ```powershell
-python -m http.server 8765 --directory .
+# local
+python -m http.server 8765 --directory C:/dev/brainguard-companion
+
+# tests — 49 checks
+node test/logic-test.js   # 34 model + 10 emergency engine
+node test/tap-test.js     # 5 tapping pipeline
 ```
 
-Then open http://127.0.0.1:8765/. Camera, microphone and motion require HTTPS or localhost.
+Any static host works (GitHub Pages, Netlify, Vercel, S3, an nginx folder). `sw.js` gives an offline shell when served over HTTPS; sensor permissions require HTTPS or `localhost`.
 
-## Tests
+## Evidence base
 
-```powershell
-node test/logic-test.js
-```
+Orientation only — these are the sources the factor framing follows, not a validation of this prototype:
+FINGER (Ngandu et al., Lancet 2015) · AHA Life's Essential 8 (2022) · WHO 2019 risk-reduction guidelines · WHO 2020 physical-activity guidance · Lancet Commission on dementia (2024) · INTERSTROKE (O'Donnell et al., 2016) · Sabia et al. (2021) · Morris et al. (MIND, 2015).
 
-49 checks in total: 34 model, 10 emergency-engine and 5 tapping-pipeline. Tests ship with the source package (`node test/logic-test.js`, `node test/tap-test.js`).
+## Limits, stated plainly
 
-## Language
-
-English, Bahasa Melayu, 中文, Español — full interface, switchable at runtime.
-
-## Status
-
-Functional prototype submitted to the Future Health Digital Innovation Challenge. Not a medical device, not validated, no clinical claims.
+- Not a medical device; not validated; no clinical claims.
+- Sensor metrics are research-grade proxies, not diagnostic tests. A change is a reason to look, not a finding.
+- Baselines need three sessions; below that the UI says "not enough data" instead of guessing.
+- The demo dataset is synthetic and labelled as such on the Today screen.
+- Browser support: Chrome/Edge/Safari current. `DeviceMotionEvent` needs a secure context and, on iOS, an explicit permission gesture.
