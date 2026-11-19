@@ -113,6 +113,7 @@
     sens_no_cam: "No camera found. You can skip this test.",
     sens_reduced: "Reduced precision — face model unavailable, using motion only.",
     sens_unavailable: "This device did not provide sensor data, so the test stopped. The daily log and the other tests still work.",
+    avail_phone: "Phone only", phone_hint: "Uses the phone\u2019s motion sensor. Open this page on a phone to run it.",
 
     tr_t: "Trends", tr_b: "Every line is your own data. Gaps mean no entry, not a zero.",
     tr_28: "28 days", tr_90: "90 days", tr_factors: "Lifestyle factors", tr_sensors: "Motor & speech",
@@ -321,6 +322,7 @@
     sens_no_cam: "Tiada kamera. Anda boleh langkau ujian ini.",
     sens_reduced: "Ketepatan dikurangkan — model wajah tiada, guna gerakan sahaja.",
     sens_unavailable: "Peranti ini tidak memberikan data sensor, jadi ujian dihentikan. Log harian dan ujian lain masih berfungsi.",
+    avail_phone: "Telefon sahaja", phone_hint: "Menggunakan sensor gerakan telefon. Buka halaman ini pada telefon untuk menjalankannya.",
 
     tr_t: "Trend", tr_b: "Setiap garis ialah data anda sendiri. Jurang bermakna tiada rekod, bukan sifar.",
     tr_28: "28 hari", tr_90: "90 hari", tr_factors: "Faktor gaya hidup", tr_sensors: "Motor & pertuturan",
@@ -529,6 +531,7 @@
     sens_no_cam: "没有找到摄像头，可以跳过这项测试。",
     sens_reduced: "精度降低——面部模型不可用，仅使用运动信息。",
     sens_unavailable: "这台设备没有提供传感器数据，测试已停止。每日记录和其他测试仍可正常使用。",
+    avail_phone: "仅限手机", phone_hint: "这项测试使用手机的运动传感器，请在手机上打开本页运行。",
 
     tr_t: "趋势", tr_b: "每条线都是你自己的数据。断点表示没有记录，不是 0。",
     tr_28: "28 天", tr_90: "90 天", tr_factors: "生活方式因素", tr_sensors: "运动与言语",
@@ -737,6 +740,7 @@
     sens_no_cam: "No se encontró cámara. Puedes saltar esta prueba.",
     sens_reduced: "Precisión reducida: sin modelo facial, solo movimiento.",
     sens_unavailable: "Este dispositivo no proporcionó datos del sensor, así que la prueba se detuvo. El registro diario y las demás pruebas siguen funcionando.",
+    avail_phone: "Solo en móvil", phone_hint: "Usa el sensor de movimiento del teléfono. Abre esta página en un móvil para realizarla.",
 
     tr_t: "Tendencias", tr_b: "Cada línea son tus datos. Un hueco significa que no hay registro, no un cero.",
     tr_28: "28 días", tr_90: "90 días", tr_factors: "Factores de estilo de vida", tr_sensors: "Movimiento y habla",

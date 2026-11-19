@@ -44,17 +44,30 @@
       '<div class="callout info mt">' + esc(t("check_why")) + "</div>" +
       '<p class="hint mt-s">' + esc(t("check_privacy")) + "</p></section>";
 
+    // Balance needs a real motion sensor. Desktops expose the API but never fire
+    // it, so the card says so instead of inviting a run that cannot work.
+    var motionOk = S.motionSupported() && sessionStorage.getItem("bg.motionOff") !== "1";
+
     html += '<div class="lab mt">' + TESTS.map(function (test) {
       var last = lastWith(test.id);
       var val = last ? primaryMetric(test.id, last) : null;
+      var blocked = test.id === "balance" && !motionOk;
+      var chip = blocked
+        ? '<span class="chip amber">' + esc(t("avail_phone")) + "</span>"
+        : val !== null
+          ? '<span class="chip teal">' + esc(val) + "</span>"
+          : '<span class="chip ghost">' + esc(t("not_enough")) + "</span>";
+      var button = blocked
+        ? '<button class="btn ghost" disabled>' + esc(t("avail_phone")) + "</button>"
+        : '<button class="btn' + (val !== null ? " ghost" : "") + '" data-run="' + test.id + '">' +
+          esc(val !== null ? t("a_again") : t("a_run")) + "</button>";
       return '<article class="test">' +
         '<div class="th">' + icon(test.icon) + "<b>" + esc(t(test.title)) + "</b></div>" +
         "<p>" + esc(t(test.desc)) + "</p>" +
-        '<div class="meta">' +
-        (val !== null ? '<span class="chip teal">' + esc(val) + "</span>" : '<span class="chip ghost">' + esc(t("not_enough")) + "</span>") +
+        '<div class="meta">' + chip +
         '<span class="chip ghost">' + (last ? A().fmtDate(last.ts) : "—") + "</span></div>" +
-        '<div class="btn-row"><button class="btn' + (val !== null ? " ghost" : "") + '" data-run="' + test.id + '">' +
-        esc(val !== null ? t("a_again") : t("a_run")) + "</button></div>" +
+        (blocked ? '<p class="hint" style="margin-top:8px">' + esc(t("phone_hint")) + "</p>" : "") +
+        '<div class="btn-row">' + button + "</div>" +
         "</article>";
     }).join("") + "</div>";
 
@@ -83,6 +96,21 @@
         document.querySelectorAll("[data-run]").forEach(function (b) {
           b.addEventListener("click", function () { start(b.getAttribute("data-run")); });
         });
+
+        // One passive probe: if no motion event arrives in 1.5 s, record that this
+        // device has no usable sensor and re-draw the card once.
+        if (S.motionSupported() && sessionStorage.getItem("bg.motionOff") !== "1") {
+          var seen = false;
+          var onMotion = function () { seen = true; };
+          window.addEventListener("devicemotion", onMotion);
+          setTimeout(function () {
+            window.removeEventListener("devicemotion", onMotion);
+            if (seen) return;
+            sessionStorage.setItem("bg.motionOff", "1");
+            var host = document.getElementById("stageHost");
+            if (!host || host.classList.contains("hide")) A().rerender();
+          }, 1500);
+        }
       }
     };
 
@@ -281,6 +309,7 @@
     active = null;
     if (!res || res.cancelled) { host.classList.add("hide"); host.innerHTML = ""; return; }
     if (res.error) {
+      if (/no_motion/.test(res.error)) sessionStorage.setItem("bg.motionOff", "1");
       var key = /too_few/.test(res.error) ? "q_low"
         : /no_motion|unavailable/.test(res.error) ? "sens_unavailable"
           : /no_media|notfound/i.test(res.error) ? "sens_no_cam"

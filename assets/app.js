@@ -178,7 +178,8 @@
     document.getElementById("pageTitle").textContent = t(r.title);
     document.getElementById("pageSub").textContent = t(r.sub);
     var st = store.load();
-    document.getElementById("streakPill").textContent = store.streak() + " " + t("days");
+    var streakN = store.streak();
+    document.getElementById("streakPill").textContent = streakN + " " + (streakN === 1 ? t("day") : t("days"));
 
     var ctx = {
       store: store,
