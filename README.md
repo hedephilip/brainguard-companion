@@ -61,8 +61,9 @@ The face test uses MediaPipe Face Landmarker loaded from CDN on first use; if it
 python -m http.server 8765 --directory C:/dev/brainguard-companion
 
 # tests — 49 checks
-node test/logic-test.js   # 34 model + 10 emergency engine
-node test/tap-test.js     # 5 tapping pipeline
+node test/logic-test.js      # 34 model
+node test/emergency-test.js  # 10 emergency engine
+node test/tap-test.js        # 5 tapping pipeline
 ```
 
 Any static host works (GitHub Pages, Netlify, Vercel, S3, an nginx folder). `sw.js` gives an offline shell when served over HTTPS; sensor permissions require HTTPS or `localhost`.
