@@ -107,8 +107,11 @@
             window.removeEventListener("devicemotion", onMotion);
             if (seen) return;
             sessionStorage.setItem("bg.motionOff", "1");
+            // Redraw unless a test is actually running, so the first visit already
+            // shows "Phone only" instead of waiting for a second visit.
             var host = document.getElementById("stageHost");
-            if (!host || host.classList.contains("hide")) A().rerender();
+            var running = !!active && host && !host.classList.contains("hide") && host.innerHTML.trim().length > 0;
+            if (!running) A().rerender();
           }, 1500);
         }
       }

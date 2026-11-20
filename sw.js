@@ -1,6 +1,6 @@
 /* BrainGuard Companion — offline shell.
    Cache-first for the app itself, nothing else. No analytics, no remote calls. */
-const CACHE = "brainguard-v3.6";
+const CACHE = "brainguard-v3.7";
 const ASSETS = [
   "./",
   "./index.html",
